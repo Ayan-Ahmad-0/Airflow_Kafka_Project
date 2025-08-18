@@ -1,0 +1,59 @@
+
+Real-Time Taxi Demand Forecasting - Project Description
+
+Overview:
+This project demonstrates a real-time data pipeline for forecasting taxi demand. The pipeline ingests streaming taxi ride events, processes them, and stores results in PostgreSQL for further analysis and dashboarding in Power BI.
+
+Components:
+1. Kafka + Zookeeper
+   - Kafka acts as the message broker where taxi ride events are streamed.
+   - Zookeeper coordinates the Kafka cluster.
+
+2. Data Producer
+   - A Python script (`Kproducer.py`) generates synthetic taxi ride events.
+   - Events are published to Kafka every 2 seconds.
+
+3. Kafka Consumer
+   - A Python script (`consumer_to_postgres.py`) consumes messages from Kafka.
+   - Stores records into PostgreSQL for persistent storage.
+
+4. PostgreSQL
+   - Serves as the storage layer.
+   - Stores the taxi ride events and allows downstream analysis.
+
+5. Airflow
+   - Orchestrates workflows (DAGs).
+   - Can be used to schedule producers, transformations, or monitoring tasks.
+
+6. Power BI (Optional)
+   - Connects to PostgreSQL to visualize real-time taxi demand trends.
+
+Project Setup Guide (for a new PC):
+-----------------------------------
+1. Install prerequisites:
+   - Docker, Docker Compose, Git
+
+2. Configure environment:
+   - Update docker-compose.yml with proper credentials.
+   - Match Kafka/Postgres configs in consumer.py.
+
+3. Build and start containers:
+   docker-compose build --no-cache
+   docker-compose up -d
+
+4. Verify services:
+   - Airflow UI → http://localhost:8080
+   - Kafka → localhost:9092
+   - PostgreSQL → localhost:5432 (use DBeaver/pgAdmin)
+
+5. Connect Power BI (optional):
+   - Connect to PostgreSQL database: airflow
+   - User: airflow, Password: airflow
+   - Table : demand_output
+
+6. Stop containers:
+   docker-compose down
+   docker-compose down -v  # also removes volumes
+
+Outcome:
+A running real-time data pipeline where taxi demand data is continuously produced, streamed via Kafka, consumed, and stored into PostgreSQL for analysis.
