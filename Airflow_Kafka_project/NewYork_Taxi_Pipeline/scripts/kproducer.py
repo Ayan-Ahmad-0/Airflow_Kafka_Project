@@ -21,7 +21,7 @@ def main():
         value_serializer=lambda v: json.dumps(v).encode('utf-8')
     )
     
-    message_count = 10  # ✅ Option 1: Send only 10 messages and exit
+    message_count = 10  # 
     for i in range(message_count):
         message = generate_message()
         producer.send(KAFKA_TOPIC, message)
@@ -34,3 +34,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
