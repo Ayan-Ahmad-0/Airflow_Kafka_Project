@@ -21,17 +21,18 @@ def main():
         value_serializer=lambda v: json.dumps(v).encode('utf-8')
     )
     
-    message_count = 10  # 
+    message_count = 10  
     for i in range(message_count):
         message = generate_message()
         producer.send(KAFKA_TOPIC, message)
         print(f"Sent message {i+1}: {message}")
-        time.sleep(1)  # simulate delay
+        time.sleep(1)  
 
     producer.flush()
     producer.close()
-    print("✅ Finished sending messages")
+    print("Finished sending messages")
 
 if __name__ == "__main__":
     main()
+
 
