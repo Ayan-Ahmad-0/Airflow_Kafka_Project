@@ -26,9 +26,9 @@ try:
         password='airflow'
     )
     cursor = conn.cursor()
-    print("✅ Connected to PostgreSQL")
+    print("Connected to PostgreSQL")
 except Exception as e:
-    print("❌ PostgreSQL connection error:", e)
+    print("PostgreSQL connection error:", e)
     sys.exit(1)
 
 print("📡 Kafka consumer started. Polling for messages on 'taxi_data_new'...")
@@ -37,7 +37,7 @@ print("📡 Kafka consumer started. Polling for messages on 'taxi_data_new'...")
 messages = consumer.poll(timeout_ms=5000)  # wait max 5 seconds
 
 if not messages:
-    print("⚠️ No messages found, exiting...")
+    print("No messages found, exiting...")
     sys.exit(0)
 
 count = 0
@@ -49,7 +49,7 @@ for tp, msgs in messages.items():
         # Validate data has required fields
         required_keys = ['taxi_id', 'timestamp', 'pickup_location', 'dropoff_location', 'passenger_count']
         if not all(k in data for k in required_keys):
-            print(f"⚠️ Skipping incomplete message: {data}")
+            print(f"Skipping incomplete message: {data}")
             continue
 
         try:
@@ -66,13 +66,14 @@ for tp, msgs in messages.items():
                 VALUES (%s, %s, %s, %s, %s)
             """, insert_data)
             conn.commit()
-            print("✅ Insert successful")
+            print("Insert successful")
             count += 1
 
         except Exception as e:
-            print("❌ Insert failed:", e)
+            print("Insert failed:", e)
             conn.rollback()
 
-print(f"✅ Processed {count} messages. Exiting.")
+print(f"Processed {count} messages. Exiting.")
 consumer.close()
 conn.close()
+
